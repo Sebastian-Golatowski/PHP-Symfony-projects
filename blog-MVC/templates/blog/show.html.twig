@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+{% include "api/index.html.twig" %}
+<div class="item">
+    <div class="title"><h1>{{post.title}}</h1></div>
+    <img src="{{post.img}}" width="600" height="400">
+        <div class="article">
+            <div class="text">{{post.text}}</div>
+            <h2><em>~ {{post.user.username}} ~</em></h2>
+            {% if app.user %}
+                <button class="report" onclick="reportPost({{post.id}},{{app.user.id}})" type="button">report</button>
+                {% if app.user.id == post.user.id %}
+                    <button class="edit" onclick="location.href='/blog/edit/{{post.id}}/index'" type="button">edit</button>
+                    <button class="delete" onclick="location.href='/blog/delete/{{post.id}}'" type="button">delete</button>
+                {% else %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <button class="delete" onclick="location.href='/blog/delete/{{post.id}}'" type="button">delete</button>
+                    {% endif %}
+                {% endif %}  
+            {% endif %}
+        </div>
+</div>
+{% endblock %}
