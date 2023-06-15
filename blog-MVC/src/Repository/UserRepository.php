@@ -69,7 +69,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
-    public function likeUserName($userName)
+    public function likeUserName($userName) // query to AdminController *like %username%*
     {
         $qb = $this->createQueryBuilder('r')
             ->where('r.username LIKE :userName')

@@ -1,5 +1,6 @@
 <?php
 
+// Controller for administration panel
 namespace App\Controller;
 
 
@@ -10,7 +11,6 @@ use App\Form\AdminUsersType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,6 +33,8 @@ class AdminController extends AbstractController
         $this->em = $em;
     }
 
+    //Getting users (all or those that username is part of a subbmitrd form) 
+    // except admin that is looking for them  
     #[Route('/', name: 'users')]
     public function showUsers(Request $req): Response
     {
@@ -46,14 +48,14 @@ class AdminController extends AbstractController
         if($form->isSubmitted()){
             $userName = $form->get('userName')->getData();
             $users = $this->userRepository->likeUserName($userName);
-            $users = array_filter($users, static function ($user) use($userId) {
+            $users = array_filter($users, static function ($user) use($userId) { //filters through users and not showing current one 
                 return $user->getId() !== $userId;
             });
-            $perPage = sizeof($users)+1;
+            $perPage = sizeof($users)+1;//disables pagination if form is submitted
         }
         else{
             $users = $this->userRepository->findAll();
-            $users = array_filter($users, static function ($user) use($userId) {
+            $users = array_filter($users, static function ($user) use($userId) { //filters through users and not showing current one
                 return $user->getId() !== $userId;
             });
             $userName="";
@@ -74,6 +76,7 @@ class AdminController extends AbstractController
 
     }
 
+    //Getting post that have been reported more than (variable in countReports(x))
     #[Route('/reports', name:'reports')]
     public function showReports(Request $req):Response
     {

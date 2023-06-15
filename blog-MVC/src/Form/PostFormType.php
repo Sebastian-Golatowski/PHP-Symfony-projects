@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PostFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options = ['required'=>true]): void
+    //required(if editing users dont need to give pictures)
     {
         $builder
             ->add('title', TextType::class,[

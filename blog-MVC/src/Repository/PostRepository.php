@@ -35,7 +35,7 @@ class PostRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Post $entity, bool $flush = false): void
+    public function remove(Post $entity, bool $flush = false): void // while deleting post, deleting reports first
     {
         $postId = $entity->getId();
         $reports = $this->reportRepository->findBy(['post'=>$postId]);

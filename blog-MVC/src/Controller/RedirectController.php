@@ -1,5 +1,7 @@
 <?php
 
+//This controller just redirects home page to index function of BlogController 
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

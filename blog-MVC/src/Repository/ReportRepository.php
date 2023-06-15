@@ -45,7 +45,7 @@ class ReportRepository extends ServiceEntityRepository
 //    /**
 //     * @return Report[] Returns an array of Report objects
 //     */
-    public function isAlreadyReported($userId, $postId)
+    public function isAlreadyReported($userId, $postId) //query to ApiController that checks if user already reported this post  
     {
         $qb = $this->createQueryBuilder('e');
 
@@ -57,7 +57,7 @@ class ReportRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function countReports($number)
+    public function countReports($number) //query to AdminController that checks nomber of reports of post
     {
         $qb = $this->createQueryBuilder('r');
         $qb ->select('IDENTITY(r.post) AS postId, COUNT(r) AS reportCount, p.title, u.username')

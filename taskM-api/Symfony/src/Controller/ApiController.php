@@ -31,7 +31,7 @@ class ApiController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    private function getData($username)
+    private function getData($username)  //function that gets tasks based on username it is separate because DRY
     {
 
         $user = $this->userRepository->findOneBy(["name" => $username]);
@@ -40,7 +40,9 @@ class ApiController extends AbstractController
         return $tasks;
     }
 
-    private function tokenToUser($token)
+    private function tokenToUser($token) 
+    //function that gets user info from Bearer token 
+    //(boolena-> is token legit, $user -> user data from token ) 
     {
 
         if ($token !== null && preg_match('/Bearer\s(\S+)/', $token, $matches)) {
@@ -72,8 +74,9 @@ class ApiController extends AbstractController
             $user = $tokenToUser[1];
 
             $jsonData = $this->serializer->serialize($this->getData($user['username']), 'json', [
-                AbstractNormalizer::IGNORED_ATTRIBUTES => ['user'],
+                AbstractNormalizer::IGNORED_ATTRIBUTES => ['user'],//returning tasks without user data in JSON 
             ]);
+            
 
             return new JsonResponse($jsonData, 200, [], true);
         }
@@ -114,7 +117,7 @@ class ApiController extends AbstractController
         return $this->json('something went wrong, try to re-login', 401);
     }
 
-    #[Route('/reminder', name: 'reminder', methods: ['PUT'])]
+    #[Route('/reminder', name: 'reminder', methods: ['PUT'])] // change boolen to oposite (true->false, false->true)
     public function reminder(Request $req): JsonResponse
     {
 
@@ -159,9 +162,4 @@ class ApiController extends AbstractController
 
         return $this->json('something went wrong, try to re-login', 401);
     }
-
-    // #[Route('/test', name:'test')]
-    // public function test(){
-
-    // }
 }

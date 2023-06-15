@@ -1,12 +1,13 @@
 <?php
 
+//All api endpoints that are used on site
+//all names tell exactly what they do
 namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\Report;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,16 +55,16 @@ class ApiController extends AbstractController
     {
         $payload = json_decode($req->getContent(), false);
         $postId = $payload->post;
-        $owner = $payload->owner;
+        $owner = $payload->owner; //by owner i mean, is owner deleted together with his post
 
         $post = $this->postRepository->find($postId);
 
         if ($this->isGranted("ROLE_ADMIN")) {
-            if($owner == 'no'){
+            if($owner == 'no'){ //no, just delete post
                 $this->postRepository->remove($post,true);
                 return $this->json("post deleted",200);
             }
-            elseif($owner == 'yes'){
+            elseif($owner == 'yes'){// yes, we need to delete his(user's) posts too
                 $user = $post->getUser();
                 $posts = $user->getPosts();
                 
@@ -83,7 +84,7 @@ class ApiController extends AbstractController
     {
         $payload = json_decode($req->getContent(), false);
         $userId = $payload->user;
-        $toWhat = $payload->towhat;
+        $toWhat = $payload->towhat; // to what(to admin or to user)
 
         if ($this->isGranted("ROLE_ADMIN")) {
             $user = $this->userRepository->find($userId);
@@ -101,7 +102,7 @@ class ApiController extends AbstractController
         }
     }
 
-    #[Route('/allowIt', name:"allowIt",methods: ['POST'])]
+    #[Route('/allowIt', name:"allowIt",methods: ['POST'])] //if post can stay(delets reports)
     public function allowIt(Request $req): JsonResponse
     {
         $payload = json_decode($req->getContent(), false);
@@ -137,6 +138,6 @@ class ApiController extends AbstractController
             return $this->json("good",200);
         }
 
-        return $this->json("already reported", 201);
+        return $this->json("already reported", 201);// user cant report post more than once
     }
 }

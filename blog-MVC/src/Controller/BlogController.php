@@ -1,4 +1,6 @@
 <?php
+
+//Controller for basic blog actions
 namespace App\Controller;
 
 use App\Form\PostFormType;
@@ -13,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/blog', name: 'blog_')]
 class BlogController extends AbstractController
@@ -57,8 +58,8 @@ class BlogController extends AbstractController
     {
         $user = $this->getUser();
         $post = $this->postRepository->find($id);
-        if ($user->getId() == $post->getUser()->getId() or $this->isGranted('ROLE_ADMIN')) {
-            $fs = new Filesystem();
+        if ($user->getId() == $post->getUser()->getId() or $this->isGranted('ROLE_ADMIN')){
+            $fs = new Filesystem();// removing img from public
             $fs->remove($this->
                 getParameter('kernel.project_dir').'/public'.$post->getImg());
                 
@@ -79,7 +80,7 @@ class BlogController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $newPost = $form ->getData();
-            $image = $form->get('img')->getData();
+            $image = $form->get('img')->getData();// from here
 
             $newName = uniqid().'.'.$image->guessExtension();
 
@@ -88,6 +89,8 @@ class BlogController extends AbstractController
             } catch (FileException $e){
                 return new Response($e ->getMessage());
             }
+            // to here, taking img form form sending  
+            //it with unigid to /public/images
 
             $newPost->setImg('/images/'.$newName);
 
@@ -105,7 +108,7 @@ class BlogController extends AbstractController
         
     }
     #[Route('/edit/{id}/{origin}',name:'edit')]
-    public function edit($id, $origin,Request $req){
+    public function edit($id, $origin,Request $req){//$origin->origin of button(where to redirect) 
         $post = $this->postRepository->find($id);
         
         $user = $this->getUser();
@@ -167,7 +170,5 @@ class BlogController extends AbstractController
         $post = $this->postRepository->find($id);
         return $this->render('blog/show.html.twig',['post'=>$post]);
     }
-
     
-
 }

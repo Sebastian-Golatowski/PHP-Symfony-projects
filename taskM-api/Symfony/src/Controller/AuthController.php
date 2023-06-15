@@ -28,7 +28,7 @@ class AuthController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    private function userExists($name)
+    private function userExists($name)// if username is occupied or if user exists(depends)
     {
         $user = $this->userRepository->findBy(['name' => $name]);
         if (sizeof($user) == 0) {
@@ -59,7 +59,7 @@ class AuthController extends AbstractController
         $user->setPassword($this->passwordHasher->hashPassword($user, $pass));
 
         $this->userRepository->save($user, true);
-        return $this->json($this->jwtManager->create($user), 201);
+        return $this->json($this->jwtManager->create($user), 201); // after succesfull registration sending JWTTOken
         
     }
 
