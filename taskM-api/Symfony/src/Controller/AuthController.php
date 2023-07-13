@@ -28,7 +28,7 @@ class AuthController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    private function userExists($name)// if username is occupied or if user exists(depends)
+    private function userExists($name) // if username is occupied or if user exists(depends)
     {
         $user = $this->userRepository->findBy(['name' => $name]);
         if (sizeof($user) == 0) {
@@ -122,6 +122,4 @@ class AuthController extends AbstractController
 
 
     // }
-
-
 }

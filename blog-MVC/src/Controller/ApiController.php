@@ -138,6 +138,6 @@ class ApiController extends AbstractController
             return $this->json("good",200);
         }
 
-        return $this->json("already reported", 201);// user cant report post more than once
+        return $this->json("already reported", 201);// user can't report post more than once
     }
 }

@@ -59,7 +59,7 @@ class BlogController extends AbstractController
         $user = $this->getUser();
         $post = $this->postRepository->find($id);
         if ($user->getId() == $post->getUser()->getId() or $this->isGranted('ROLE_ADMIN')){
-            $fs = new Filesystem();// removing img from public
+            $fs = new Filesystem(); // removing img from public
             $fs->remove($this->
                 getParameter('kernel.project_dir').'/public'.$post->getImg());
                 

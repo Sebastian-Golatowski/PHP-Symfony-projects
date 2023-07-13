@@ -51,7 +51,7 @@ class AdminController extends AbstractController
             $users = array_filter($users, static function ($user) use($userId) { //filters through users and not showing current one 
                 return $user->getId() !== $userId;
             });
-            $perPage = sizeof($users)+1;//disables pagination if form is submitted
+            $perPage = sizeof($users)+1; //disables pagination if form is submitted
         }
         else{
             $users = $this->userRepository->findAll();
