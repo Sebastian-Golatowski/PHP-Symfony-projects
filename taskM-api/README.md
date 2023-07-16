@@ -1,6 +1,11 @@
 # task-api
 
 ## To run this project, please follow these steps. If you encounter any difficulties while starting the project, feel free to contact me at s.golatowski5@gmail.com
+#### To run this project on your machine, you will need to have the following software installed:
+#### Composer
+#### Node.js
+#### Symofny CLI 
+#### Some database server
 
 In CMD
 Clone the repository:
@@ -23,7 +28,7 @@ Install the required dependencies:
 composer install
 ```
 
-Once the dependencies are installed, you need to create the database:
+Once the dependencies are installed, you need to create the database (you might need to change "DATABASE_URL" in .env file):
 ```
 symfony console doctrine:database:create
 ```
@@ -54,6 +59,11 @@ cd Vue
 Install the required dependencies:
 ```
 npm install
+```
+
+Now, the only thing left is to start this server:
+```
+npm run dev
 ```
 
 Finally, open your web browser and enter the following in the address bar: 127.0.0.1:5173

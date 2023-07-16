@@ -1,4 +1,4 @@
-# blog-MVC
+# support-MVC
 
 ## To run this project, please follow these steps. If you encounter any difficulties while starting the project, feel free to contact me at s.golatowski5@gmail.com
 #### To run this project on your machine, you will need to have the following software installed:
@@ -6,16 +6,17 @@
 #### Node.js
 #### Symofny CLI 
 #### Some database server
+#### In addition, you will need an SMTP server for email functionality in your project. I recommend using MailHog, which is a popular choice. The "MAILER_DSN" entry in the .env file is #### already configured for MailHog, making it easy to set up and use for testing and development purposes.
 
 In CMD
 Clone the repository:
 ```
-git clone https://github.com/Sebastian-Golatowski/symfony-blog.git
+git clone https://github.com/Sebastian-Golatowski/support-system.git
 ```
 
 Navigate to the project directory:
 ```
-cd symfony-blog
+cd support-system
 ```
 
 Install the required dependencies:
@@ -71,10 +72,15 @@ symfony server:start -d
 Finally, open your web browser and enter the following in the address bar: 127.0.0.1:8000
 
 Account details:
-Admin account:
-Username: user1
-Password: 123
-
 User account:
-Username: user2
-Password: 123
+Username: User
+Password: zaq1@WSX
+
+Admin account:
+Username: Admin
+Password: zaq1@WSX
+
+Agent account:
+Username: Agent
+Password: zaq1@WSX
+
