@@ -24,4 +24,4 @@ Agents, on the other hand, can view tickets that have been assigned to them. The
 
 Admins have the highest level of access and control within the system. They are responsible for assigning tickets to agents. In addition to ticket management, admins have the capability to create and modify user data. They can assign roles to users based on their requirements. Admins also have access to a log that records the activities and changes made to the tickets.
 
-This system effectively allows users to open support tickets, agents to handle assigned tickets, and admins to manage the entire ticketing process, including user roles and ticket activities.
+This system effectively allows users to open support tickets, agents to handle assigned tickets, and admins to manage the entire ticketing process, including user roles and ticket activities. dditionally, the system includes email notifications to keep users updated on ticket status and important updates.

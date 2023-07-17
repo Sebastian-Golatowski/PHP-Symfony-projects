@@ -6,7 +6,7 @@
 #### Node.js
 #### Symofny CLI 
 #### Some database server
-#### In addition, you will need an SMTP server for email functionality in your project. I recommend using MailHog, which is a popular choice. The "MAILER_DSN" entry in the .env file is #### already configured for MailHog, making it easy to set up and use for testing and development purposes.
+#### In addition, you will need an SMTP server for email functionality in your project. I recommend using MailHog, which is a popular choice. The "MAILER_DSN" entry in the .env file is  already configured for MailHog, making it easy to set up and use for testing and development purposes.
 
 In CMD
 Clone the repository:

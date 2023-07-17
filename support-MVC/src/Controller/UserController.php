@@ -25,7 +25,7 @@ class UserController extends AbstractController
         $this->userRepository = $em->getRepository(User::class);
     }
 
-    private function flashbagAndRender($user, $form, $info, $value){
+    private function flashbagAndRender($user, $form, $info, $value){ // i wan uning this chunk of code, a lot sooooo.... hey DRY. am i right? 
         $flashBag = new FlashBag;
         $flashBag->add('danger',$info.$value);
 
@@ -68,7 +68,7 @@ class UserController extends AbstractController
 
             $newUsername = $req->get('changeName');
 
-            if ($oldUsername != $newUsername) {
+            if ($oldUsername != $newUsername) {// there is no point in checking if username is correct if it didn't change
                 
                 $len = strlen($newUsername);
                 if($len > 20 or $len < 3){
@@ -83,7 +83,7 @@ class UserController extends AbstractController
             if($newPassword != null){
                 $len = strlen($newPassword);
                 if($len >= 8 and $len <= 30){
-                    if(preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/', $newPassword)){
+                    if(preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/', $newPassword)){// regex for One lowercase letter, one uppercase letter, one number, and one special character
 
                         $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
                     }
@@ -102,12 +102,11 @@ class UserController extends AbstractController
             if($oldEmail != $newEmail){
 
                 if(strlen($newEmail) == 0){
-                    // dd(array($oldEmail, $newEmail));
                     return $this->flashbagAndRender($user, $form,
                         'It (user) nedds an email, you know.', null);
                 }
 
-                if(!filter_var($newEmail, FILTER_VALIDATE_EMAIL)){
+                if(!filter_var($newEmail, FILTER_VALIDATE_EMAIL)){ // validator for eamil
 
                     return $this->flashbagAndRender($user, $form,
                         'This ( '.$newEmail.' ) doesn`t look like email', null);
@@ -116,7 +115,7 @@ class UserController extends AbstractController
 
             $this->userRepository->save($user, true);
 
-            $session->set('user_changed', 'user changed');
+            $session->set('user_changed', 'user changed'); // sesion for /manage/user/{id}
 
             return $this->redirectToRoute('users_infoUser',['id'=>$id]);
         }
@@ -187,7 +186,7 @@ class UserController extends AbstractController
 
             $this->userRepository->save($user, true);
             
-            $session->set('user_created', 'user created');
+            $session->set('user_created', 'user created');// for /
 
             return $this->redirectToRoute('users_users');
 
@@ -206,7 +205,7 @@ class UserController extends AbstractController
         $user = $this->userRepository->find($id);
         $this->userRepository->remove($user, true);
 
-        $session->set('user_deleted', 'user deleted');
+        $session->set('user_deleted', 'user deleted'); // sesion for /manage
 
         return $this->redirectToRoute('users_manage');
     }

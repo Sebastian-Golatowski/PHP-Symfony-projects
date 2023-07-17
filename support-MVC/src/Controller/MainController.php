@@ -33,7 +33,7 @@ class MainController extends AbstractController
         $this->mailer = $mailer;
     }
 
-    private  function createLog($what, $ticket, $user){
+    private  function createLog($what, $ticket, $user){ // crteating log to database 
             
         $log = new Log;
         $dateTime = new \DateTime();
@@ -49,7 +49,7 @@ class MainController extends AbstractController
         return null;
     }
 
-    private function sendMail($user, $subject, $ticketId){
+    private function sendMail($user, $subject, $ticketId){ 
 
         $email = (new Email())
         ->from($_ENV['EMAIL'])
@@ -97,7 +97,7 @@ class MainController extends AbstractController
             
             $this->ticketRepository->save($ticket, true);
 
-            $session->set('ticket_created', 'ticket created');
+            $session->set('ticket_created', 'ticket created'); // sesion to /tickets
 
             $this->createLog('Ticket created By', $ticket, $user);
 
@@ -106,7 +106,6 @@ class MainController extends AbstractController
 
         return $this->render('main/make.html.twig', [
             'form' => $form->createView(),
-            
         ]);
     }
 
@@ -114,13 +113,14 @@ class MainController extends AbstractController
     public function ticketInfo($id, Request $req,SessionInterface $session): Response
     {   
         $ticket = $this->ticketRepository->find(['id'=>$id]);
-        $names = $this->userRepository->namesOfAgents();
+        
 
         if($this->isGranted('ROLE_ADMIN')){
-            $form = $this->createForm(TicketFormType::class, $ticket, ['edit'=>true, 'agents'=>$names]);
+            $names = $this->userRepository->namesOfAgents();// names of agent for assigning tickets
+            $form = $this->createForm(TicketFormType::class, $ticket, ['edit'=>true, 'agents'=>$names]); // if admin can see asignig option
         }
         else{
-            $form = $this->createForm(TicketFormType::class, $ticket, ['edit'=>false, 'agents'=>$names]);
+            $form = $this->createForm(TicketFormType::class, $ticket, ['edit'=>false, 'agents'=>[]]);
         }
         
         $form->handleRequest($req);
@@ -135,7 +135,7 @@ class MainController extends AbstractController
 
             $this->sendMail($user, 'you have new ticket', $id);
 
-            $session->set('ticket_assigned', 'ticket assigned to'.$user->getUsername());
+            $session->set('ticket_assigned', 'ticket assigned to'.$user->getUsername());//sesion for /tickets
 
             return $this->redirectToRoute('main_tickets');
 
@@ -154,13 +154,13 @@ class MainController extends AbstractController
     {
 
         if($this->isGranted('ROLE_ADMIN')){
-            $tickets = $this->ticketRepository->findBy(['status'=>false, 'belongsTo'=>null],['priority'=>'ASC']);
+            $tickets = $this->ticketRepository->findBy(['status'=>false, 'belongsTo'=>null],['priority'=>'ASC']);// admin sees all tickets with no Agent, that are not closed
         }
         elseif($this->isGranted('ROLE_AGENT')){
-            $tickets = $this->ticketRepository->findBy(['belongsTo'=>$this->getUser(),'status'=>false],['priority'=>'ASC']);
+            $tickets = $this->ticketRepository->findBy(['belongsTo'=>$this->getUser(),'status'=>false],['priority'=>'ASC']);// Agent sees only tickec given to him, that are not closed
         }
         else{ // is user
-            $tickets = $this->ticketRepository->findBy(['createdBy'=>$this->getUser(),'status'=>false]);
+            $tickets = $this->ticketRepository->findBy(['createdBy'=>$this->getUser(),'status'=>false]);//User sees only his own, that are not closed
         }
 
 
